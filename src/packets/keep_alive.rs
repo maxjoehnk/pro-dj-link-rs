@@ -57,8 +57,8 @@ impl<'a> KeepAlivePackage<'a> {
                 buffer[0x27],
                 buffer[0x28],
                 buffer[0x29],
-                buffer[0x30],
-                buffer[0x31],
+                buffer[0x2a],
+                buffer[0x2b],
             ];
             let ip = buffer.read_i32(0x2c);
             let ip = Ipv4Addr::from(ip as u32);
