@@ -1,8 +1,9 @@
-use crate::buffer_ext::BufferExt;
-use crate::{ProDjLinkResult, PROLINK_HEADER};
 use std::borrow::Cow;
 use std::io::{Cursor, Write};
 use std::net::Ipv4Addr;
+
+use crate::buffer_ext::BufferExt;
+use crate::{ProDjLinkResult, PROLINK_HEADER};
 
 pub(crate) const HEADER: [u8; 12] = [
     0x51, 0x73, 0x70, 0x74, 0x31, 0x57, 0x6d, 0x4a, 0x4f, 0x4c, 0x06, 0x00,
@@ -71,7 +72,7 @@ impl<'a> KeepAlivePackage<'a> {
                 ip,
             })
         } else {
-            println!("ignoring invalid packet: {buffer:?}");
+            tracing::debug!("ignoring invalid packet: {buffer:?}");
             None
         }
     }

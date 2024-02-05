@@ -1,5 +1,6 @@
-use crate::buffer_ext::BufferExt;
 use std::borrow::Cow;
+
+use crate::buffer_ext::BufferExt;
 
 const HEADER: [u8; 11] = [
     0x51, 0x73, 0x70, 0x74, 0x31, 0x57, 0x6d, 0x4a, 0x4f, 0x4c, 0x28,
@@ -30,7 +31,7 @@ impl<'a> TimingPacket<'a> {
                 beat: buffer[0x5c],
             })
         } else {
-            println!("ignoring invalid packet: {buffer:?}");
+            tracing::debug!("ignoring invalid packet: {buffer:?}");
             None
         }
     }

@@ -1,11 +1,13 @@
+use std::net::Ipv4Addr;
+
+#[cfg(feature = "async-std")]
+use async_std::net::UdpSocket;
+#[cfg(all(feature = "tokio", not(feature = "async-std")))]
+use tokio::net::UdpSocket;
+
 use crate::error::ProDjLinkResult;
 use crate::packets::*;
 use crate::{DeviceType, KeepAlivePackage, ANNOUNCEMENT_PORT, STATUS_PORT};
-#[cfg(feature = "async-std")]
-use async_std::net::UdpSocket;
-use std::net::Ipv4Addr;
-#[cfg(all(feature = "tokio", not(feature = "async-std")))]
-use tokio::net::UdpSocket;
 
 pub struct AsyncVirtualCdj {
     device: u8,
@@ -44,7 +46,7 @@ impl AsyncVirtualCdj {
         let packet = StatusPacket::parse(&self.buffer[0..bytes]);
 
         if packet.is_none() {
-            println!("ignoring invalid packet: {:?}", self.buffer);
+            tracing::debug!("ignoring invalid packet: {:?}", self.buffer);
         }
 
         Ok(packet)

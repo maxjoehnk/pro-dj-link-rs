@@ -1,6 +1,7 @@
+use std::net::{Ipv4Addr, UdpSocket};
+
 use crate::error::ProDjLinkResult;
 use crate::{CdjStatus, DeviceType, KeepAlivePackage, MixerStatus, ANNOUNCEMENT_PORT, STATUS_PORT};
-use std::net::{Ipv4Addr, UdpSocket};
 
 pub struct VirtualCdj {
     device: u8,
@@ -43,7 +44,7 @@ impl VirtualCdj {
             .or_else(|| MixerStatus::try_parse(&self.buffer[0..bytes]).map(Packet::MixerStatus));
 
         if packet.is_none() {
-            println!("ignoring invalid packet: {:?}", self.buffer);
+            tracing::debug!("ignoring invalid packet: {:?}", self.buffer);
         }
 
         Ok(packet)
